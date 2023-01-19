@@ -4,6 +4,9 @@ import Button from "./components/Button/Button";
 import Web3 from "web3";
 import WalletConnectProvider from "@walletconnect/web3-provider";
 import { Web3Auth } from "@web3auth/modal";
+import { SiBinance, SiEthereum } from 'react-icons/si';
+import { BiShapePolygon, BiWallet} from 'react-icons/bi';
+import {GiFoxHead } from 'react-icons/gi';
 
 function App() {
   const [selectedNetwork, setSelectedNetwork] = useState("");
@@ -15,6 +18,10 @@ function App() {
  
 
   const onConnect = async () => {
+    if(!selectedNetwork && !selectedWallet){
+      setError('Please, select wallet and network')
+      return
+    }
    
     
     if (selectedNetwork === 'ethereum') {
@@ -124,16 +131,19 @@ function App() {
         <div className="flex">
           <Button
             text={"BNB Chain"}
+            icon ={<SiBinance/>}
             active={selectedNetwork === "bnb"}
             onClick={() => onNetworkClick("bnb")}
           />
           <Button
             text={"Polygon Chain"}
+            icon={<BiShapePolygon/>}
             active={selectedNetwork === "polygon"}
             onClick={() => onNetworkClick("polygon")}
           />
           <Button
             text={"Ethereum Chain"}
+            icon={<SiEthereum/>}
             active={selectedNetwork === "ethereum"}
             onClick={() => onNetworkClick("ethereum")}
           />
@@ -143,12 +153,14 @@ function App() {
         <div className="flex">
           <Button
             text={"Metamask"}
+            icon={<GiFoxHead/>}
             active={selectedWallet === "metamask"}
             onClick={() => onWalletClick("metamask")}
           />
           <Button
             text={"Wallet Connect"}
             active={selectedWallet === "wallet_connect"}
+            icon={<BiWallet/>}
             onClick={() => onWalletClick("wallet_connect")}
           />
         </div>
