@@ -1,0 +1,14 @@
+body {
+  height: 100vh;
+  border: 1px solid red;
+}
+
+.flex {
+  display: flex;
+  gap: 1em;
+}
+
+.main {
+  display: grid;
+  place-items: center;
+}

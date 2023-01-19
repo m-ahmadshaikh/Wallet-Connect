@@ -2,17 +2,18 @@ import { useState } from "react";
 import "./App.css";
 import Button from "./components/Button/Button";
 import Web3 from "web3";
-// import WalletConnectProvider from "@walletconnect/web3-provider";
+import WalletConnectProvider from "@walletconnect/web3-provider";
 
 //  Create WalletConnect Provider
-// const provider = new WalletConnectProvider({
-//   infuraId: "27e484dcd9e3efcfd25a83a78777cdf1", // Required
-// });
+const provider = new WalletConnectProvider({
+  infuraId: "27e484dcd9e3efcfd25a83a78777cdf1", // Required
+});
 
+//  Enable session (triggers QR Code modal)
+await provider.enable();
 
 //  Create Web3
-// let web3 = new Web3(provider);
-let web3;
+let web3 = new Web3(provider);
 
 function App() {
   const [selectedNetwork, setSelectedNetwork] = useState("");
@@ -21,27 +22,22 @@ function App() {
   const [balance, setBalance] = useState("");
 
   const onConnect = async () => {
-    console.log(selectedWallet)
-    console.log(selectedNetwork)
-    if (selectedNetwork === "ethereum") {
-      console.log('eth')
-
-      web3 = new Web3(window.web3.currentProvider);
-
-    } else if (selectedNetwork === "bnb") {
-      console.log('bnb')
-
+    if (selectedWallet === "ethereun") {
+      web3 = new Web3(
+        new Web3.providers.HttpProvider(
+          "https://mainnet.infura.io/v3/YOUR_PROJECT_ID"
+        )
+      );
+    } else if (selectedWallet === "bnb") {
       web3 = new Web3(
         new Web3.providers.HttpProvider("https://bsc-dataseed.binance.org/")
       );
-    } else if (selectedNetwork === "polygon") {
-      console.log('polygon')
+    } else if (selectedWallet === "polygon") {
       web3 = new Web3(
         new Web3.providers.HttpProvider("https://polygon.network")
       );
     }
-    if (selectedWallet === "metamask" && window.ethereum) {
-      console.log('metamask')
+    if (selectedNetwork === "eth" && window.ethereum) {
       try {
         await window.ethereum.enable();
         const accounts = await web3.eth.getAccounts();
@@ -51,20 +47,19 @@ function App() {
         setBalance(balanceEther);
       } catch (error) {}
     } else {
-      console.log('install metamask')
-      // if (provider.connected) {
-      //   // const provider = new WalletConnectProvider({
-      //   //   infuraId: "27e484dcd9e3efcfd25a83a78777cdf1",
-      //   // });
-      //   // await provider.enable();
-      //   // if (provider.connected) {
-      //   //   const accounts = await web3.eth.getAccounts();
-      //   //   setAddress(accounts[0]);
-      //   //   const balanceWei = await web3.eth.getBalance(accounts[0]);
-      //   //   const balanceEther = web3.utils.fromWei(balanceWei, "ether");
-      //   //   setBalance(balanceEther);
-      //   // }
-      // }
+      if (provider.connected) {
+        const provider = new WalletConnectProvider({
+          infuraId: "27e484dcd9e3efcfd25a83a78777cdf1",
+        });
+        await provider.enable();
+        if (provider.connected) {
+          const accounts = await web3.eth.getAccounts();
+          setAddress(accounts[0]);
+          const balanceWei = await web3.eth.getBalance(accounts[0]);
+          const balanceEther = web3.utils.fromWei(balanceWei, "ether");
+          setBalance(balanceEther);
+        }
+      }
     }
   };
   const onNetworkClick = (text) => {
@@ -90,7 +85,7 @@ function App() {
           />
           <Button
             text={"Ethereum Chain"}
-            active={selectedNetwork === "ethereum"}
+            active={selectedNetwork === "ethereun"}
             onClick={() => onNetworkClick("ethereum")}
           />
         </div>
@@ -117,8 +112,8 @@ function App() {
       <div>
         <h3>Account</h3>
         <div className="flex">
-          <p>Address: {address}</p>
-          <p>Balance: {balance}</p>
+          <p>{address}</p>
+          <p>{balance}</p>
         </div>
       </div>
     </div>

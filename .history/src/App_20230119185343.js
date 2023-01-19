@@ -26,8 +26,11 @@ function App() {
     if (selectedNetwork === "ethereum") {
       console.log('eth')
 
-      web3 = new Web3(window.web3.currentProvider);
-
+      web3 = new Web3(
+        new Web3.providers.HttpProvider(
+          "https://mainnet.infura.io/v3/27e484dcd9e3efcfd25a83a78777cdf1"
+        )
+      );
     } else if (selectedNetwork === "bnb") {
       console.log('bnb')
 
@@ -35,12 +38,11 @@ function App() {
         new Web3.providers.HttpProvider("https://bsc-dataseed.binance.org/")
       );
     } else if (selectedNetwork === "polygon") {
-      console.log('polygon')
       web3 = new Web3(
         new Web3.providers.HttpProvider("https://polygon.network")
       );
     }
-    if (selectedWallet === "metamask" && window.ethereum) {
+    if (selectedWallet === "metamask" ) {
       console.log('metamask')
       try {
         await window.ethereum.enable();
@@ -51,7 +53,6 @@ function App() {
         setBalance(balanceEther);
       } catch (error) {}
     } else {
-      console.log('install metamask')
       // if (provider.connected) {
       //   // const provider = new WalletConnectProvider({
       //   //   infuraId: "27e484dcd9e3efcfd25a83a78777cdf1",
@@ -117,8 +118,8 @@ function App() {
       <div>
         <h3>Account</h3>
         <div className="flex">
-          <p>Address: {address}</p>
-          <p>Balance: {balance}</p>
+          <p>{address}</p>
+          <p>{balance}</p>
         </div>
       </div>
     </div>

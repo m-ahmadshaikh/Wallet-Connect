@@ -1,0 +1,11 @@
+.main {
+  background: white;
+  border: 1px solid black;
+  border-radius: 10px;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.main:hover {
+  background-color: wheat;
+}

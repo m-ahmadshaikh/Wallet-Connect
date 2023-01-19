@@ -26,8 +26,11 @@ function App() {
     if (selectedNetwork === "ethereum") {
       console.log('eth')
 
-      web3 = new Web3(window.web3.currentProvider);
-
+      web3 = new Web3(
+        new Web3.providers.HttpProvider(
+          "https://mainnet.infura.io/v3/27e484dcd9e3efcfd25a83a78777cdf1"
+        )
+      );
     } else if (selectedNetwork === "bnb") {
       console.log('bnb')
 
@@ -117,8 +120,8 @@ function App() {
       <div>
         <h3>Account</h3>
         <div className="flex">
-          <p>Address: {address}</p>
-          <p>Balance: {balance}</p>
+          <p>{address}</p>
+          <p>{balance}</p>
         </div>
       </div>
     </div>
